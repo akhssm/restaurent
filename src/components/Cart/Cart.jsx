@@ -8,13 +8,13 @@ const Cart = () => {
   // Function to add an item to the cart
   const addToCart = (item) => {
     // Check if the item is already in the cart
-    const existingItem = cartItems.find(cartItem => cartItem.name === item.name);
+    const existingItem = cartItems.find(cartItem => cartItem.id === item.id); // Use item id to check
     
     if (existingItem) {
       // If it exists, increase the quantity
       setCartItems(cartItems.map(cartItem => 
-        cartItem.name === item.name 
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+        cartItem.id === item.id // Check by item id
+          ? { ...cartItem, quantity: cartItem.quantity + 1 } // Increment quantity
           : cartItem
       ));
     } else {
@@ -27,7 +27,7 @@ const Cart = () => {
 
   // Calculate the total amount
   const totalAmount = cartItems.reduce((total, item) => {
-    return total + (parseFloat(item.price.slice(1)) * item.quantity);
+    return total + (parseFloat(item.price.slice(1)) * item.quantity); // Update to calculate total for each item
   }, 0);
 
   return (
@@ -36,13 +36,13 @@ const Cart = () => {
       {cartItems.length > 0 ? (
         <div>
           <ul>
-            {cartItems.map((item, index) => (
-              <li key={index}>
+            {cartItems.map((item) => (
+              <li key={item.id}> {/* Use item.id as the key */}
                 {item.name} - Quantity: {item.quantity} - Price: {item.price} - Total: ${(parseFloat(item.price.slice(1)) * item.quantity).toFixed(2)}
               </li>
             ))}
           </ul>
-          <h3>Total Amount: ${totalAmount.toFixed(2)}</h3>
+          <h3>Total Amount: ${totalAmount.toFixed(2)}</h3> {/* Display total amount */}
         </div>
       ) : (
         <p>Your cart is empty.</p>
