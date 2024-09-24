@@ -11,7 +11,6 @@ import restaurant4 from '../../assets/Paradise.jpg';
 import restaurant5 from '../../assets/Shahghouse.jpg';
 
 // Add more imports as needed
-
 const restaurantImages = {
   1: restaurant1,
   2: restaurant2,
@@ -24,8 +23,8 @@ const restaurantImages = {
 const RestaurantCard = ({ id, name, rating, description }) => {
   return (
     <div className="restaurant-card">
-      {/* Use the image based on the restaurant ID */}
-      <img src={restaurantImages[id]} alt={name} />
+      {/* Dynamically display the restaurant image based on ID */}
+      <img src={restaurantImages[id]} alt={name} className="restaurant-img" />
       <h3>{name}</h3>
       <p>{description}</p>
       <p>Rating: {rating}</p>
