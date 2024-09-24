@@ -5,6 +5,7 @@ import Footer from './components/Footer/Footer';
 import Cart from './components/Cart/Cart'; // Import Cart component
 import Menu from './components/Menu/Menu'; // Import Menu component
 import RestaurantList from './components/RestaurantCard/RestaurantList'; // Import the RestaurantList component
+import Login from './components/Login/Login'; // Import the Login component
 
 function App() {
   return (
@@ -33,6 +34,9 @@ function App() {
 
           {/* Menu Route */}
           <Route path="/menu/:id" element={<Menu />} />
+
+          {/* Login Route */}
+          <Route path="/login" element={<Login />} />
         </Routes>
 
         <Footer />
