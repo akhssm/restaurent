@@ -1,6 +1,7 @@
 // Menu.jsx
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import './Menu.css'
 
 const menus = {
   1: [
