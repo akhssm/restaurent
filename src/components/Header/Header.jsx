@@ -8,7 +8,6 @@ function Header() {
     <header>
       <h1>Restaurant Website Name</h1>
       <input type="text" placeholder="Search" />
-      <button>Search</button>
       <nav>
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
