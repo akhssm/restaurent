@@ -94,6 +94,7 @@ const Menu = ({ addToCart }) => {
         onChange={handleSearchChange}
       />
 
+      {/* Display matching menu items */}
       <ul>
         {filteredItems.length > 0 ? (
           filteredItems.map((item) => (
