@@ -1,47 +1,50 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // For routing
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'; // For routing
 import Header from './components/Header/Header';  // Adjust the paths if needed
 import Footer from './components/Footer/Footer';
 import Cart from './components/Cart/Cart'; // Import Cart component
 import Menu from './components/Menu/Menu'; // Import Menu component
 import RestaurantList from './components/RestaurantCard/RestaurantList'; // Import the RestaurantList component
 import Login from './components/Login/Login'; // Import the Login component
+import Signup from './components/Signup/Signup'; // Import the Signup component
 
+// Create a function to use location inside the Router
 function App() {
   return (
     <Router>
-      <div>
-        <Header />
-
-        {/* Define Routes */}
-        <Routes>
-          {/* Home Route */}
-          <Route
-            path="/"
-            element={
-              <>
-                <section>
-                  <h2>Restaurant Section</h2>
-                  {/* Render the RestaurantList component which contains all restaurant cards */}
-                  <RestaurantList />
-                </section>
-              </>
-            }
-          />
-
-          {/* Cart Route */}
-          <Route path="/cart" element={<Cart />} />
-
-          {/* Menu Route */}
-          <Route path="/menu/:id" element={<Menu />} />
-
-          {/* Login Route */}
-          <Route path="/login" element={<Login />} />
-        </Routes>
-
-        <Footer />
-      </div>
+      <AppRoutes />
     </Router>
+  );
+}
+
+const AppRoutes = () => {
+  const location = useLocation(); // Now this is correctly within the Router context
+
+  return (
+    <div>
+      {/* Render Header only if not on Login or Signup page */}
+      {location.pathname !== '/login' && location.pathname !== '/signup' && <Header />}
+
+      {/* Define Routes */}
+      <Routes>
+        {/* Home Route */}
+        <Route path="/" element={<RestaurantList />} />
+
+        {/* Cart Route */}
+        <Route path="/cart" element={<Cart />} />
+
+        {/* Menu Route */}
+        <Route path="/menu/:id" element={<Menu />} />
+
+        {/* Login Route */}
+        <Route path="/login" element={<Login />} />
+
+        {/* Signup Route */}
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
+
+      <Footer />
+    </div>
   );
 }
 
