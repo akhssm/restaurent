@@ -16,11 +16,6 @@ function Header() {
     }
   };
 
-  // Do not render Header on login or signup pages
-  if (location.pathname === '/login' || location.pathname === '/signup') {
-    return null;
-  }
-
   return (
     <header>
       <div className="restaurant-name">

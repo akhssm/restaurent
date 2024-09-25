@@ -22,25 +22,47 @@ const AppRoutes = () => {
 
   return (
     <div>
-      {/* Render Header only if not on Login or Signup page */}
-      {location.pathname !== '/login' && location.pathname !== '/signup' && <Header />}
-
       {/* Define Routes */}
       <Routes>
         {/* Home Route */}
-        <Route path="/" element={<RestaurantList />} />
+        <Route path="/" element={
+          <>
+            <Header />
+            <RestaurantList />
+          </>
+        } />
 
         {/* Cart Route */}
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/cart" element={
+          <>
+            <Header />
+            <Cart />
+          </>
+        } />
 
         {/* Menu Route */}
-        <Route path="/menu/:id" element={<Menu />} />
+        <Route path="/menu/:id" element={
+          <>
+            <Header />
+            <Menu />
+          </>
+        } />
 
         {/* Login Route */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={
+          <>
+            <Header />
+            <Login />
+          </>
+        } />
 
         {/* Signup Route */}
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup" element={
+          <>
+            <Header />
+            <Signup />
+          </>
+        } />
       </Routes>
 
       <Footer />
