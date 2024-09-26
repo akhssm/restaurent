@@ -1,6 +1,7 @@
 import React from 'react';
 import RestaurantCard from './RestaurantCard';
 import './RestaurantCard.css'; // Import the CSS file for the container
+import { useCart } from '../../CartContext'; // Import the useCart hook
 
 const restaurants = [
   { id: 1, name: 'Almond House', rating: '4.5', description: 'Best Sweets' },

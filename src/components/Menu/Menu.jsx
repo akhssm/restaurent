@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './Menu.css';
 
+
 // Dummy data for restaurant menus
 const dummyMenus = {
   1: [

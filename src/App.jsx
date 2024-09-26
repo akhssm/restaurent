@@ -1,38 +1,48 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'; // For routing
-import Header from './components/Header/Header';  // Adjust the paths if needed
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import Header from './components/Header/Header';  
 import Footer from './components/Footer/Footer';
-import Cart from './components/Cart/Cart'; // Import Cart component
-import Menu from './components/Menu/Menu'; // Import Menu component
-import RestaurantList from './components/RestaurantCard/RestaurantList'; // Import the RestaurantList component
-import Login from './components/Login/Login'; // Import the Login component
-import Signup from './components/Signup/Signup'; // Import the Signup component
+import Cart from './components/Cart/Cart';
+import Menu from './components/Menu/Menu'; 
+import RestaurantList from './components/RestaurantCard/RestaurantList'; 
+import Login from './components/Login/Login'; 
+import Signup from './components/Signup/Signup'; 
+import { CartProvider } from './CartContext';
 
-// Create a function to use location inside the Router
 function App() {
-  // Create state to store the search query
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Manage login state
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <Router>
-      <AppRoutes searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-    </Router>
+    <CartProvider>
+      <Router>
+        <AppRoutes 
+          isLoggedIn={isLoggedIn} // Pass isLoggedIn to AppRoutes
+          searchQuery={searchQuery} 
+          setSearchQuery={setSearchQuery} 
+          setIsLoggedIn={setIsLoggedIn} // Pass setIsLoggedIn to routes
+        />
+      </Router>
+    </CartProvider>
   );
 }
 
-const AppRoutes = ({ searchQuery, setSearchQuery }) => {
-  const location = useLocation(); // Now this is correctly within the Router context
+const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn }) => {
+  const location = useLocation();
 
   return (
     <div>
-      {/* Define Routes */}
       <Routes>
         {/* Home Route */}
         <Route path="/" element={
-          <>
-            <Header setSearchQuery={setSearchQuery} />
-            <RestaurantList searchQuery={searchQuery} />
-          </>
+          isLoggedIn ? ( // Show home only if logged in
+            <>
+              <Header setSearchQuery={setSearchQuery} />
+              <RestaurantList searchQuery={searchQuery} />
+            </>
+          ) : (
+            <Login setIsLoggedIn={setIsLoggedIn} /> // Redirect to login if not logged in
+          )
         } />
 
         {/* Cart Route */}
@@ -53,10 +63,7 @@ const AppRoutes = ({ searchQuery, setSearchQuery }) => {
 
         {/* Login Route */}
         <Route path="/login" element={
-          <>
-            <Header />
-            <Login />
-          </>
+          <Login setIsLoggedIn={setIsLoggedIn} /> // Pass setIsLoggedIn to Login
         } />
 
         {/* Signup Route */}

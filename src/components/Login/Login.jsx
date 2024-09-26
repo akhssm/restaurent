@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
-import './Login.css'; // Optional: Create a CSS file for styles
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleLogin = (e) => {
     e.preventDefault();
-    
-    // Simple validation
+
     if (!email || !password) {
       setError('Please enter both email and password');
       return;
     }
 
-    // TODO: Implement login logic (e.g., API call)
+    // Store user details in local storage
+    localStorage.setItem('userEmail', email);
+    localStorage.setItem('userPassword', password); // Consider security implications
 
-    // For now, just log the email and password
-    console.log('Email:', email);
-    console.log('Password:', password);
+    // Set the login state to true
+    setIsLoggedIn(true);
 
     // Clear the fields
     setEmail('');

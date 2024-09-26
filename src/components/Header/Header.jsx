@@ -35,7 +35,7 @@ function Header({ setSearchQuery }) {
       <nav>
         <ul>
           {/* Home button should always be displayed */}
-          <li><Link to="/">Home</Link></li>
+          {/* <li><Link to="/">Home</Link></li> */}
 
           {/* Show other links only if not on login or signup pages */}
           {location.pathname !== '/login' && location.pathname !== '/signup' && (
