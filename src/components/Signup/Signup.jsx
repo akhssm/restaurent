@@ -74,7 +74,6 @@ const Signup = () => {
         <button type="submit">Sign Up</button>
       </form>
       {/* Home Button */}
-      <button onClick={() => navigate('/')}>Go to Home</button>
     </div>
   );
 };

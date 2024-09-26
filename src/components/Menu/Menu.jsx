@@ -59,9 +59,9 @@ const restaurantNames = {
   1: 'Almond House',
   2: 'Bawarchi',
   3: 'Cream Stone',
-  4: 'Paradise',
+  4: 'Dominos Pizza',
   5: 'Shah Ghouse',
-  6: 'Shah Ghouse',
+  6: 'Paradise',
 };
 
 const Menu = ({ addToCart }) => {

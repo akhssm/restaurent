@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom'; // Import Link for navigation
+import { useLocation, Link } from 'react-router-dom'; // Import necessary functions
 import './Header.css'; // Import your CSS file for styling
 
-function Header() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
+function Header({ setSearchQuery }) {
+  const location = useLocation(); // Get the current path
+  const [inputValue, setInputValue] = useState('');
 
-  // Handle search based on location
-  const handleSearch = () => {
-    if (location.pathname === '/') {
-      navigate(`/search-restaurants?q=${searchQuery}`);
-    } else {
-      navigate(`${location.pathname}?q=${searchQuery}`);
-    }
+  // Handle search based on input value
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearchQuery(inputValue);
   };
 
   return (
@@ -21,19 +17,33 @@ function Header() {
       <div className="restaurant-name">
         <h1>Dummy Restaurant Name</h1>
       </div>
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search restaurants or items..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
+
+      {/* Render the search bar only if not on login or signup pages */}
+      {(location.pathname !== '/login' && location.pathname !== '/signup') && (
+        <div className="search-bar">
+          <form onSubmit={handleSearch}>
+            <input
+              type="text"
+              placeholder="Search restaurants or items..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+          </form>
+        </div>
+      )}
+
       <nav>
         <ul>
-          <li><Link to="/">Home</Link></li> {/* Home Link */}
-          <li><Link to="/cart">Cart</Link></li>
-          <li><Link to="/login">Login</Link></li>
+          {/* Home button should always be displayed */}
+          <li><Link to="/">Home</Link></li>
+
+          {/* Show other links only if not on login or signup pages */}
+          {location.pathname !== '/login' && location.pathname !== '/signup' && (
+            <>
+              <li><Link to="/cart">Cart</Link></li>
+              <li><Link to="/login">Login</Link></li>
+            </>
+          )}
         </ul>
       </nav>
     </header>

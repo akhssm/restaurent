@@ -8,8 +8,8 @@ import restaurant1 from '../../assets/Almondhouse.png';
 import restaurant2 from '../../assets/Bawarchi.jpg';
 import restaurant3 from '../../assets/Creamstone.jpg';
 import restaurant4 from '../../assets/Dominos.png';
-import restaurant5 from '../../assets/Paradise.jpg';
-import restaurant6 from '../../assets/Shahghouse.jpg';
+import restaurant5 from '../../assets/Shahghouse.jpg';
+import restaurant6 from '../../assets/Paradise.jpg';
 
 const restaurantImages = {
   1: restaurant1,

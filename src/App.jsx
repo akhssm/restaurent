@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'; // For routing
 import Header from './components/Header/Header';  // Adjust the paths if needed
 import Footer from './components/Footer/Footer';
@@ -10,14 +10,17 @@ import Signup from './components/Signup/Signup'; // Import the Signup component
 
 // Create a function to use location inside the Router
 function App() {
+  // Create state to store the search query
+  const [searchQuery, setSearchQuery] = useState('');
+
   return (
     <Router>
-      <AppRoutes />
+      <AppRoutes searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
     </Router>
   );
 }
 
-const AppRoutes = () => {
+const AppRoutes = ({ searchQuery, setSearchQuery }) => {
   const location = useLocation(); // Now this is correctly within the Router context
 
   return (
@@ -27,8 +30,8 @@ const AppRoutes = () => {
         {/* Home Route */}
         <Route path="/" element={
           <>
-            <Header />
-            <RestaurantList />
+            <Header setSearchQuery={setSearchQuery} />
+            <RestaurantList searchQuery={searchQuery} />
           </>
         } />
 
