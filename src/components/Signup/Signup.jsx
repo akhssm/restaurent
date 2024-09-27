@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Signup.css'; // Import your CSS file for styling
+import './Signup.css';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -9,9 +9,8 @@ const Signup = () => {
     email: '',
     password: ''
   });
-  const [error, setError] = useState(null); // State to hold error messages
+  const [error, setError] = useState(null);
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -20,23 +19,20 @@ const Signup = () => {
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Replace with your API call
       console.log('User signed up:', formData);
-      // Navigate to home or login page after signup
-      navigate('/');
+      navigate('/login'); // Navigate to the login page after signing up
     } catch (err) {
-      setError('Signup failed. Please try again.'); // Set error message
+      setError('Signup failed. Please try again.');
     }
   };
 
   return (
     <div className="signup-container">
       <h2>Sign Up</h2>
-      {error && <p className="error-message">{error}</p>} {/* Display error message */}
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name:</label>
@@ -73,7 +69,6 @@ const Signup = () => {
         </div>
         <button type="submit">Sign Up</button>
       </form>
-      {/* Home Button */}
     </div>
   );
 };

@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
-import { useLocation, Link } from 'react-router-dom'; // Import necessary functions
-import './Header.css'; // Import your CSS file for styling
+import { useNavigate } from 'react-router-dom';
+import './Header.css';
 
-function Header({ setSearchQuery }) {
-  const location = useLocation(); // Get the current path
+function Header({ setSearchQuery, userEmail, setIsLoggedIn, setUserEmail, hideElements }) {
   const [inputValue, setInputValue] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
 
-  // Handle search based on input value
+  const userName = userEmail ? userEmail.split('@')[0] : '';
+
   const handleSearch = (e) => {
     e.preventDefault();
     setSearchQuery(inputValue);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userPassword');
+    setIsLoggedIn(false);
+    setUserEmail(null);
+    navigate('/login');
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
   };
 
   return (
@@ -18,34 +32,41 @@ function Header({ setSearchQuery }) {
         <h1>Dummy Restaurant Name</h1>
       </div>
 
-      {/* Render the search bar only if not on login or signup pages */}
-      {(location.pathname !== '/login' && location.pathname !== '/signup') && (
-        <div className="search-bar">
-          <form onSubmit={handleSearch}>
-            <input
-              type="text"
-              placeholder="Search restaurants or items..."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-          </form>
-        </div>
+      {/* Conditionally render search bar and navigation based on hideElements prop */}
+      {!hideElements && (
+        <>
+          <div className="search-bar">
+            <form onSubmit={handleSearch}>
+              <input
+                type="text"
+                placeholder="Search restaurants or items..."
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+            </form>
+          </div>
+
+          <nav>
+            <ul>
+              <li><a href="/cart">Cart</a></li>
+              {!userEmail && <li><a href="/login">Login</a></li>}
+            </ul>
+          </nav>
+        </>
       )}
 
-      <nav>
-        <ul>
-          {/* Home button should always be displayed */}
-          {/* <li><Link to="/">Home</Link></li> */}
-
-          {/* Show other links only if not on login or signup pages */}
-          {location.pathname !== '/login' && location.pathname !== '/signup' && (
-            <>
-              <li><Link to="/cart">Cart</Link></li>
-              <li><Link to="/login">Login</Link></li>
-            </>
+      {userEmail && (
+        <div className="user-info">
+          <button className="profile-btn" onClick={toggleDropdown}>
+            {userName} <i className="arrow-down"></i>
+          </button>
+          {showDropdown && (
+            <div className="dropdown">
+              <button onClick={handleLogout} className="logout-btn">Logout</button>
+            </div>
           )}
-        </ul>
-      </nav>
+        </div>
+      )}
     </header>
   );
 }

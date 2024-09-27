@@ -1,4 +1,4 @@
-/* Header.css */
+/* General Header Styling */
 header {
     background-color: #4CAF50; /* Green */
     color: white;
@@ -11,6 +11,75 @@ header {
 /* Restaurant name on the left side */
 .restaurant-name {
     flex-grow: 1; /* Allow it to occupy available space */
+}
+
+/* Profile Button and User Info */
+.user-info {
+    position: relative;
+    display: inline-block; /* Align the profile button */
+}
+
+.profile-btn {
+    background: none;
+    border: none;
+    color: white; /* Keep it consistent with the header color */
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.profile-btn i.arrow-down {
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+}
+
+/* Dropdown for logout */
+.dropdown {
+    position: absolute;
+    top: 40px; /* Position below the profile button */
+    right: 0;
+    background-color: white;
+    color: #4CAF50; /* Keep the text color consistent with the theme */
+    border: 1px solid #ddd;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    z-index: 1;
+    min-width: 120px;
+    padding: 10px;
+    display: block; /* Display dropdown when active */
+}
+
+/* Hide dropdown when not in use */
+.user-info .dropdown {
+    display: none; /* Hide dropdown by default */
+}
+
+/* Show dropdown when showDropdown is true */
+.user-info.active .dropdown {
+    display: block; /* Display dropdown when user-info is active */
+}
+
+.dropdown button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #4CAF50;
+    font-size: 1rem;
+    padding: 8px 12px;
+    text-align: left;
+    width: 100%; /* Make button full width */
+}
+
+.dropdown button:hover {
+    background-color: #f1f1f1;
+    color: #45a049;
 }
 
 /* Center the search bar */
@@ -27,22 +96,6 @@ header {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
-
-.search-bar button {
-    padding: 8px 16px;
-    margin-left: 10px;
-    background-color: white;
-    color: #4CAF50;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
-
-.search-bar button:hover {
-    background-color: #45a049; /* Change button color on hover */
-    color: white;
 }
 
 /* Navigation should stay on the right side */

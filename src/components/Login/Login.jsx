@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Header from '../Header/Header'; // Import the Header component
+import './Login.css'; // Import the CSS file
 
-const Login = ({ setIsLoggedIn }) => {
+const Login = ({ setIsLoggedIn, setUserEmail }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -15,10 +19,14 @@ const Login = ({ setIsLoggedIn }) => {
 
     // Store user details in local storage
     localStorage.setItem('userEmail', email);
-    localStorage.setItem('userPassword', password); // Consider security implications
+    // Security Note: Avoid storing passwords in local storage in production
 
-    // Set the login state to true
+    // Set the login state to true and save the email
     setIsLoggedIn(true);
+    setUserEmail(email);
+
+    // Navigate to home page after successful login
+    navigate('/'); 
 
     // Clear the fields
     setEmail('');
@@ -28,6 +36,7 @@ const Login = ({ setIsLoggedIn }) => {
 
   return (
     <div className="login-container">
+      <Header userEmail={null} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} hideElements={true} /> {/* Pass hideElements as true */}
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div className="form-group">
