@@ -19,11 +19,15 @@ function Header({ setSearchQuery, userEmail, setIsLoggedIn, setUserEmail, hideEl
     localStorage.removeItem('userPassword');
     setIsLoggedIn(false);
     setUserEmail(null);
-    navigate('/login');
+    navigate('/login'); // Navigate to the login page
   };
 
   const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
+    setShowDropdown((prevShowDropdown) => !prevShowDropdown); // Toggle dropdown visibility
+  };
+
+  const navigateHome = () => {
+    navigate('/'); // Navigate to the home page
   };
 
   return (
@@ -48,6 +52,7 @@ function Header({ setSearchQuery, userEmail, setIsLoggedIn, setUserEmail, hideEl
 
           <nav>
             <ul>
+              <li><button onClick={navigateHome} className="home-btn">Home</button></li> {/* Home Button */}
               <li><a href="/cart">Cart</a></li>
               {!userEmail && <li><a href="/login">Login</a></li>}
             </ul>
@@ -56,7 +61,7 @@ function Header({ setSearchQuery, userEmail, setIsLoggedIn, setUserEmail, hideEl
       )}
 
       {userEmail && (
-        <div className="user-info">
+        <div className={`user-info ${showDropdown ? 'active' : ''}`}>
           <button className="profile-btn" onClick={toggleDropdown}>
             {userName} <i className="arrow-down"></i>
           </button>

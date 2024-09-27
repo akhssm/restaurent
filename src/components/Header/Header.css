@@ -5,7 +5,7 @@ header {
     padding: 20px;
     display: flex;
     justify-content: space-between; /* Space between items */
-    align-items: center;
+    align-items: center; /* Center items vertically */
 }
 
 /* Restaurant name on the left side */
@@ -27,7 +27,7 @@ header {
     cursor: pointer;
     padding: 8px 16px;
     display: flex;
-    align-items: center;
+    align-items: center; /* Center the profile button's content */
     gap: 5px;
 }
 
@@ -53,11 +53,6 @@ header {
     z-index: 1;
     min-width: 120px;
     padding: 10px;
-    display: block; /* Display dropdown when active */
-}
-
-/* Hide dropdown when not in use */
-.user-info .dropdown {
     display: none; /* Hide dropdown by default */
 }
 
@@ -105,24 +100,45 @@ nav {
 
 nav ul {
     list-style: none;
-    display: flex;
+    display: flex; /* Flexbox for alignment */
     gap: 20px; /* Space between the navigation items */
     padding: 0;
     margin: 0;
+    align-items: center; /* Align items vertically */
 }
 
 nav ul li {
     display: inline;
 }
 
-nav ul li a {
+nav ul li a,
+nav ul li button { /* Apply styles to both links and buttons */
     color: white;
     text-decoration: none;
     padding: 8px 16px;
     transition: background-color 0.3s;
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center align content vertically */
 }
 
-nav ul li a:hover {
+nav ul li a:hover,
+nav ul li button:hover {
     background-color: #45a049; /* Slightly darker green on hover */
     border-radius: 4px;
+}
+
+.home-btn {
+    background-color: transparent; /* Transparent background */
+    border: none; /* No border */
+    color: white; /* Text color */
+    font-size: 1rem; /* Font size */
+    cursor: pointer; /* Pointer cursor */
+    padding: 8px 16px; /* Padding for spacing */
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center align content vertically */
+}
+
+.home-btn:hover {
+    background-color: #45a049; /* Change color on hover */
+    border-radius: 4px; /* Rounded corners */
 }
