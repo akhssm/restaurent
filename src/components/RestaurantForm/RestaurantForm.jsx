@@ -1,57 +1,39 @@
 // RestaurantForm.jsx
 import React, { useState, useEffect } from 'react';
-import './RestaurantForm.css';
 
-const RestaurantForm = ({ currentRestaurant, onSubmit }) => {
-  const [name, setName] = useState('');
-  const [rating, setRating] = useState('');
-  const [description, setDescription] = useState('');
-
-  useEffect(() => {
-    if (currentRestaurant) {
-      setName(currentRestaurant.name);
-      setRating(currentRestaurant.rating);
-      setDescription(currentRestaurant.description);
-    } else {
-      setName('');
-      setRating('');
-      setDescription('');
-    }
-  }, [currentRestaurant]);
+const RestaurantForm = ({ initialData = {}, onSubmit }) => {
+  const [name, setName] = useState(initialData.name || '');
+  const [rating, setRating] = useState(initialData.rating || '');
+  const [description, setDescription] = useState(initialData.description || '');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({ name, rating, description });
   };
 
+  useEffect(() => {
+    if (initialData) {
+      setName(initialData.name);
+      setRating(initialData.rating);
+      setDescription(initialData.description);
+    }
+  }, [initialData]);
+
   return (
     <form onSubmit={handleSubmit}>
-      <input 
-        type="text" 
-        placeholder="Restaurant Name" 
-        value={name} 
-        onChange={(e) => setName(e.target.value)} 
-        required 
-      />
-      <input 
-        type="number" 
-        step="0.1" 
-        min="0" 
-        max="5" 
-        placeholder="Rating" 
-        value={rating} 
-        onChange={(e) => setRating(e.target.value)} 
-        required 
-      />
-      <textarea 
-        placeholder="Description" 
-        value={description} 
-        onChange={(e) => setDescription(e.target.value)} 
-        required 
-      />
-      <button type="submit">
-        {currentRestaurant ? 'Edit Restaurant' : 'Add Restaurant'}
-      </button>
+      <div>
+        <label>Name:</label>
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      </div>
+      <div>
+        <label>Rating:</label>
+        <input type="text" value={rating} onChange={(e) => setRating(e.target.value)} />
+      </div>
+      <div>
+        <label>Description:</label>
+        <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+      </div>
+      <button type="submit">Submit</button>
     </form>
   );
 };
