@@ -8,6 +8,7 @@ import RestaurantList from './components/RestaurantCard/RestaurantList';
 import Login from './components/Login/Login'; 
 import Signup from './components/Signup/Signup'; 
 import RestaurantEdit from './components/RestaurantForm/RestaurantEdit'; // Import RestaurantEdit
+import AddRestaurant from './components/RestaurantCard/AddRestaurant'; // Import AddRestaurant
 import { CartProvider } from './CartContext';
 
 function App() {
@@ -35,6 +36,14 @@ function App() {
     setRestaurants(initialRestaurants);
   }, []);
 
+  // Function to handle adding a new restaurant
+  const handleAddRestaurant = (newRestaurant) => {
+    setRestaurants((prevRestaurants) => [
+      ...prevRestaurants,
+      { ...newRestaurant, id: prevRestaurants.length + 1 }, // Assign a new ID
+    ]);
+  };
+
   const handleUpdateRestaurant = (updatedRestaurant) => {
     setRestaurants((prevRestaurants) =>
       prevRestaurants.map((restaurant) =>
@@ -54,6 +63,7 @@ function App() {
           userEmail={userEmail}
           setUserEmail={setUserEmail}
           restaurants={restaurants} // Pass restaurants to routes
+          onAddRestaurant={handleAddRestaurant} // Pass add function
           onUpdateRestaurant={handleUpdateRestaurant} // Pass update function to routes
         />
       </Router>
@@ -62,7 +72,7 @@ function App() {
 }
 
 // Separate component to handle all routes
-const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, userEmail, setUserEmail, restaurants, onUpdateRestaurant }) => {
+const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, userEmail, setUserEmail, restaurants, onAddRestaurant, onUpdateRestaurant }) => {
   return (
     <div>
       <Routes>
@@ -106,21 +116,23 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
         )} />
 
         <Route path="/signup" element={(
+          <Signup />
+        )} />
+
+        {/* Route for adding a new restaurant */}
+        <Route path="/add-restaurant" element={(
           <>
-            <Header hideElements={true} />
-            <Signup />
+            <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
+            <AddRestaurant onAddRestaurant={onAddRestaurant} /> {/* Pass the add function */}
           </>
         )} />
 
         {/* Edit restaurant route */}
         <Route path="/edit/:id" element={(
-          <>
-            <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
-            <RestaurantEdit 
-              onUpdateRestaurant={onUpdateRestaurant} // Pass the update function to RestaurantEdit
-              restaurants={restaurants} // Pass restaurants data
-            />
-          </>
+          <RestaurantEdit 
+            onUpdateRestaurant={onUpdateRestaurant} // Pass the update function to RestaurantEdit
+            restaurants={restaurants} // Pass restaurants data
+          />
         )} />
       </Routes>
 
