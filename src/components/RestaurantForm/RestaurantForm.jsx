@@ -1,39 +1,53 @@
-// RestaurantForm.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-const RestaurantForm = ({ initialData = {}, onSubmit }) => {
-  const [name, setName] = useState(initialData.name || '');
-  const [rating, setRating] = useState(initialData.rating || '');
-  const [description, setDescription] = useState(initialData.description || '');
+const RestaurantForm = ({ initialData, onSubmit }) => {
+  const [formData, setFormData] = useState(initialData);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ name, rating, description });
+    onSubmit(formData); // Submit the updated data
   };
-
-  useEffect(() => {
-    if (initialData) {
-      setName(initialData.name);
-      setRating(initialData.rating);
-      setDescription(initialData.description);
-    }
-  }, [initialData]);
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>Name:</label>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+        <label htmlFor="name">Name:</label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          value={formData.name} 
+          onChange={handleChange}
+        />
       </div>
+
       <div>
-        <label>Rating:</label>
-        <input type="text" value={rating} onChange={(e) => setRating(e.target.value)} />
+        <label htmlFor="rating">Rating:</label>
+        <input 
+          type="text" 
+          id="rating" 
+          name="rating" 
+          value={formData.rating} 
+          onChange={handleChange}
+        />
       </div>
+
       <div>
-        <label>Description:</label>
-        <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+        <label htmlFor="description">Description:</label>
+        <textarea 
+          id="description" 
+          name="description" 
+          value={formData.description} 
+          onChange={handleChange}
+        />
       </div>
-      <button type="submit">Submit</button>
+
+      <button type="submit">Save</button>
     </form>
   );
 };

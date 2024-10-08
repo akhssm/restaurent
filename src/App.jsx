@@ -8,14 +8,13 @@ import RestaurantList from './components/RestaurantCard/RestaurantList';
 import Login from './components/Login/Login'; 
 import Signup from './components/Signup/Signup'; 
 import RestaurantEdit from './components/RestaurantForm/RestaurantEdit'; // Import RestaurantEdit
-import AddRestaurant from './components/RestaurantCard/AddRestaurant'; // Import AddRestaurant
 import { CartProvider } from './CartContext';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [userEmail, setUserEmail] = useState(null);
-  const [restaurants, setRestaurants] = useState([]); // State to manage restaurants
+  const [restaurants, setRestaurants] = useState([]);
 
   useEffect(() => {
     const savedEmail = localStorage.getItem('userEmail');
@@ -24,7 +23,7 @@ function App() {
       setUserEmail(savedEmail);
     }
 
-    // Fetch initial restaurant data, replace with API call if needed
+    // Fetch initial restaurant data
     const initialRestaurants = [
       { id: 1, name: 'Almond House', rating: '4.5', description: 'Best Sweets' },
       { id: 2, name: 'Bawarchi', rating: '4.2', description: 'Famous Biryani' },
@@ -36,11 +35,10 @@ function App() {
     setRestaurants(initialRestaurants);
   }, []);
 
-  // Function to handle adding a new restaurant
   const handleAddRestaurant = (newRestaurant) => {
     setRestaurants((prevRestaurants) => [
       ...prevRestaurants,
-      { ...newRestaurant, id: prevRestaurants.length + 1 }, // Assign a new ID
+      { ...newRestaurant, id: prevRestaurants.length + 1 }
     ]);
   };
 
@@ -62,17 +60,15 @@ function App() {
           setIsLoggedIn={setIsLoggedIn}
           userEmail={userEmail}
           setUserEmail={setUserEmail}
-          restaurants={restaurants} // Pass restaurants to routes
-          onAddRestaurant={handleAddRestaurant} // Pass add function
-          onUpdateRestaurant={handleUpdateRestaurant} // Pass update function to routes
+          restaurants={restaurants}
+          onUpdateRestaurant={handleUpdateRestaurant} // Pass update handler to edit
         />
       </Router>
     </CartProvider>
   );
 }
 
-// Separate component to handle all routes
-const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, userEmail, setUserEmail, restaurants, onAddRestaurant, onUpdateRestaurant }) => {
+const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, userEmail, setUserEmail, restaurants, onUpdateRestaurant }) => {
   return (
     <div>
       <Routes>
@@ -86,8 +82,8 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
             />
             <RestaurantList 
               searchQuery={searchQuery} 
-              restaurants={restaurants} // Pass restaurants to the list
-              onEdit={onUpdateRestaurant} // Pass the update function for edit
+              restaurants={restaurants} 
+              onUpdateRestaurant={onUpdateRestaurant} // Pass update handler to list
             />
           </>
         ) : (
@@ -119,26 +115,17 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
           <Signup />
         )} />
 
-        {/* Route for adding a new restaurant */}
-        <Route path="/add-restaurant" element={(
-          <>
-            <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
-            <AddRestaurant onAddRestaurant={onAddRestaurant} /> {/* Pass the add function */}
-          </>
-        )} />
-
-        {/* Edit restaurant route */}
         <Route path="/edit/:id" element={(
           <RestaurantEdit 
-            onUpdateRestaurant={onUpdateRestaurant} // Pass the update function to RestaurantEdit
-            restaurants={restaurants} // Pass restaurants data
+            restaurants={restaurants} 
+            onUpdateRestaurant={onUpdateRestaurant} // Pass update handler to edit page
           />
         )} />
-      </Routes>
 
+      </Routes>
       <Footer />
     </div>
   );
-}
+};
 
 export default App;
