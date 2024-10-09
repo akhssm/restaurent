@@ -15,7 +15,7 @@ const restaurantImages = {
   3: restaurant3,
   4: restaurant4,
   5: restaurant5,
-  6: restaurant6
+  6: restaurant6,
 };
 
 const RestaurantCard = ({ id, name, rating, description, showEditButton }) => {

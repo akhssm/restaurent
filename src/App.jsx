@@ -113,9 +113,7 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
           </>
         )} />
 
-        <Route path="/signup" element={(
-          <Signup />
-        )} />
+        <Route path="/signup" element={<Signup />} />
 
         <Route path="/edit/:id" element={(
           <RestaurantEdit 

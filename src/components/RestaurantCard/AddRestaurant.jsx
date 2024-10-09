@@ -11,7 +11,7 @@ const AddRestaurant = ({ onAddRestaurant }) => {
       id: Date.now(),
       name,
       description,
-      rating: parseFloat(rating)
+      rating: parseFloat(rating),
     };
     onAddRestaurant(newRestaurant);
     setName('');
