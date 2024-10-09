@@ -18,11 +18,13 @@ const restaurantImages = {
   6: restaurant6
 };
 
-const RestaurantCard = ({ id, name, rating, description }) => {
+const RestaurantCard = ({ id, name, rating, description, showEditButton }) => {
+  const imageSrc = restaurantImages[id] || restaurant1; // Default to restaurant1 if id not found
+  
   return (
     <div className="restaurant-card">
       <Link to={`/menu/${id}`}>
-        <img src={restaurantImages[id]} alt={name} className="restaurant-img" />
+        <img src={imageSrc} alt={name} className="restaurant-img" />
       </Link>
       <h3>{name}</h3>
       <p>{description}</p>
@@ -30,9 +32,11 @@ const RestaurantCard = ({ id, name, rating, description }) => {
       <Link to={`/menu/${id}`}>
         <button>View Menu</button>
       </Link>
-      <Link to={`/edit/${id}`}>
-        <button>Edit</button>
-      </Link>
+      {showEditButton && ( // Conditionally render the Edit button
+        <Link to={`/edit/${id}`}>
+          <button>Edit</button>
+        </Link>
+      )}
     </div>
   );
 };

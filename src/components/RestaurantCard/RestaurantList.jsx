@@ -1,9 +1,7 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 import RestaurantCard from './RestaurantCard';
-import './RestaurantCard.css';
 
 const RestaurantList = ({ searchQuery, restaurants, onUpdateRestaurant }) => {
-  // Filter restaurants based on search query
   const filteredRestaurants = restaurants.filter(restaurant =>
     restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -11,8 +9,9 @@ const RestaurantList = ({ searchQuery, restaurants, onUpdateRestaurant }) => {
   return (
     <div className="restaurant-list">
       <h2>Restaurant List</h2>
-
-      {/* Display filtered restaurants */}
+      <Link to="/add-restaurant">
+        <button>Add New Restaurant</button>
+      </Link>
       <div className="restaurant-cards-container">
         {filteredRestaurants.length > 0 ? (
           filteredRestaurants.map(restaurant => (
@@ -22,7 +21,7 @@ const RestaurantList = ({ searchQuery, restaurants, onUpdateRestaurant }) => {
               name={restaurant.name} 
               rating={restaurant.rating} 
               description={restaurant.description} 
-              showEditButton={true} // Pass true to show the Edit button
+              showEditButton={true} // Assuming you're using this prop in `RestaurantCard`
             />
           ))
         ) : (

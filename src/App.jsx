@@ -7,7 +7,8 @@ import Menu from './components/Menu/Menu';
 import RestaurantList from './components/RestaurantCard/RestaurantList'; 
 import Login from './components/Login/Login'; 
 import Signup from './components/Signup/Signup'; 
-import RestaurantEdit from './components/RestaurantForm/RestaurantEdit'; // Import RestaurantEdit
+import RestaurantEdit from './components/RestaurantForm/RestaurantEdit'; 
+import AddRestaurant from './components/RestaurantCard/AddRestaurant'; // Corrected path for AddRestaurant component
 import { CartProvider } from './CartContext';
 
 function App() {
@@ -61,14 +62,15 @@ function App() {
           userEmail={userEmail}
           setUserEmail={setUserEmail}
           restaurants={restaurants}
-          onUpdateRestaurant={handleUpdateRestaurant} // Pass update handler to edit
+          onAddRestaurant={handleAddRestaurant} // Pass the add handler
+          onUpdateRestaurant={handleUpdateRestaurant} // Pass the update handler
         />
       </Router>
     </CartProvider>
   );
 }
 
-const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, userEmail, setUserEmail, restaurants, onUpdateRestaurant }) => {
+const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, userEmail, setUserEmail, restaurants, onAddRestaurant, onUpdateRestaurant }) => {
   return (
     <div>
       <Routes>
@@ -83,7 +85,7 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
             <RestaurantList 
               searchQuery={searchQuery} 
               restaurants={restaurants} 
-              onUpdateRestaurant={onUpdateRestaurant} // Pass update handler to list
+              onUpdateRestaurant={onUpdateRestaurant} 
             />
           </>
         ) : (
@@ -118,8 +120,15 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
         <Route path="/edit/:id" element={(
           <RestaurantEdit 
             restaurants={restaurants} 
-            onUpdateRestaurant={onUpdateRestaurant} // Pass update handler to edit page
+            onUpdateRestaurant={onUpdateRestaurant} 
           />
+        )} />
+
+        <Route path="/add-restaurant" element={(
+          <>
+            <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
+            <AddRestaurant onAddRestaurant={onAddRestaurant} />
+          </>
         )} />
 
       </Routes>
