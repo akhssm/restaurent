@@ -18,13 +18,14 @@ const restaurantImages = {
   6: restaurant6,
 };
 
-const RestaurantCard = ({ id, name, rating, description, showEditButton }) => {
-  const imageSrc = restaurantImages[id] || restaurant1; // Default to restaurant1 if id not found
-  
+const RestaurantCard = ({ id, name, rating, description, image, showEditButton }) => {
+  // Check if the restaurant has a predefined image, otherwise use the provided image or a placeholder
+  const imageSrc = restaurantImages[id] || image || 'https://via.placeholder.com/150'; // Use placeholder if no image is provided
+
   return (
     <div className="restaurant-card">
       <Link to={`/menu/${id}`}>
-        <img src={imageSrc} alt={name} className="restaurant-img" />
+        <img src={imageSrc} alt={name} className="restaurant-img" /> {/* Render image correctly */}
       </Link>
       <h3>{name}</h3>
       <p>{description}</p>
@@ -32,7 +33,7 @@ const RestaurantCard = ({ id, name, rating, description, showEditButton }) => {
       <Link to={`/menu/${id}`}>
         <button>View Menu</button>
       </Link>
-      {showEditButton && ( // Conditionally render the Edit button
+      {showEditButton && (
         <Link to={`/edit/${id}`}>
           <button>Edit</button>
         </Link>

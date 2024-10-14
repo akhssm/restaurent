@@ -15,13 +15,14 @@ const RestaurantList = ({ searchQuery, restaurants, onUpdateRestaurant }) => {
       <div className="restaurant-cards-container">
         {filteredRestaurants.length > 0 ? (
           filteredRestaurants.map(restaurant => (
-            <RestaurantCard 
-              key={restaurant.id} 
-              id={restaurant.id} 
-              name={restaurant.name} 
-              rating={restaurant.rating} 
-              description={restaurant.description} 
-              showEditButton={true} // Assuming you're using this prop in `RestaurantCard`
+            <RestaurantCard
+              key={restaurant.id}
+              id={restaurant.id}
+              name={restaurant.name}
+              rating={restaurant.rating}
+              description={restaurant.description}
+              image={restaurant.image} // Make sure to pass the image URL
+              showEditButton={true} 
             />
           ))
         ) : (
