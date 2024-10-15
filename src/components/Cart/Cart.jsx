@@ -2,14 +2,14 @@
 import React from 'react';
 import Menu from '../Menu/Menu'; // Correct path to Menu.jsx
 import './Cart.css';
-import { useCart } from '../../CartContext'; // Import the useCart hook
+import { useCart } from '../CartContext/CartContext'; // Import the useCart hook
 
 const Cart = () => {
   const { cartItems, removeItemFromCart, addItemToCart } = useCart(); // Use context
 
   // Calculate the total amount
   const totalAmount = cartItems.reduce((total, item) => {
-    return total + (parseFloat(item.price.slice(1)) * item.quantity);
+    return total + parseFloat(item.price.slice(1)) * item.quantity; // Correctly parse the price
   }, 0);
 
   return (
@@ -20,8 +20,9 @@ const Cart = () => {
           <ul>
             {cartItems.map((item) => (
               <li key={item.id}>
-                {item.name} - Quantity: {item.quantity} - Price: {item.price} - Total: ${(parseFloat(item.price.slice(1)) * item.quantity).toFixed(2)}
-                <button onClick={() => removeItemFromCart(item)}>Remove</button> {/* Button to remove item */}
+                {item.name} - Quantity: {item.quantity} - Price: {item.price} - Total: $
+                {(parseFloat(item.price.slice(1)) * item.quantity).toFixed(2)}
+                <button onClick={() => removeItemFromCart(item)}>Remove</button>
               </li>
             ))}
           </ul>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './Menu.css';
-
+import { useCart } from '../CartContext/CartContext'; // Correct path to CartContext
 
 // Dummy data for restaurant menus
 const dummyMenus = {
@@ -73,6 +73,12 @@ const Menu = ({ addToCart }) => {
   // State for the search query
   const [searchQuery, setSearchQuery] = useState('');
 
+  // State for the edit functionality
+  const [editItem, setEditItem] = useState(null);
+  const [editedName, setEditedName] = useState('');
+  const [editedQuantity, setEditedQuantity] = useState('');
+  const [editedPrice, setEditedPrice] = useState('');
+
   // Function to handle the search input change
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -82,6 +88,24 @@ const Menu = ({ addToCart }) => {
   const filteredItems = menuItems.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Function to handle edit click
+  const handleEditClick = (item) => {
+    setEditItem(item);
+    setEditedName(item.name);
+    setEditedQuantity(item.quantity);
+    setEditedPrice(item.price);
+  };
+
+  // Function to handle the edit form submission
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    const updatedMenuItems = menuItems.map((item) =>
+      item.id === editItem.id ? { ...item, name: editedName, quantity: editedQuantity, price: editedPrice } : item
+    );
+    dummyMenus[id] = updatedMenuItems; // Update the dummy data
+    setEditItem(null); // Close the edit form
+  };
 
   return (
     <div className="menu-container">
@@ -95,21 +119,52 @@ const Menu = ({ addToCart }) => {
         onChange={handleSearchChange}
       />
 
-      {/* Display matching menu items */}
       <ul>
         {filteredItems.length > 0 ? (
           filteredItems.map((item) => (
-            <li key={item.id} className="menu-item">
-              <h3>{item.name}</h3>
-              <p>Quantity: {item.quantity}</p>
-              <p>Price: {item.price}</p>
+            <li key={item.id}>
+              {item.name} - {item.quantity} - {item.price}
               <button onClick={() => addToCart(item)}>Add to Cart</button>
+              <button onClick={() => handleEditClick(item)}>Edit</button>
             </li>
           ))
         ) : (
-          <p>No items found.</p>
+          <li>No items found.</li>
         )}
       </ul>
+
+      {/* Edit Form */}
+      {editItem && (
+        <form onSubmit={handleEditSubmit} className="edit-form">
+          <h3>Edit Menu Item</h3>
+          <label>
+            Name:
+            <input
+              type="text"
+              value={editedName}
+              onChange={(e) => setEditedName(e.target.value)}
+            />
+          </label>
+          <label>
+            Quantity:
+            <input
+              type="text"
+              value={editedQuantity}
+              onChange={(e) => setEditedQuantity(e.target.value)}
+            />
+          </label>
+          <label>
+            Price:
+            <input
+              type="text"
+              value={editedPrice}
+              onChange={(e) => setEditedPrice(e.target.value)}
+            />
+          </label>
+          <button type="submit">Update Item</button>
+          <button type="button" onClick={() => setEditItem(null)}>Cancel</button>
+        </form>
+      )}
     </div>
   );
 };

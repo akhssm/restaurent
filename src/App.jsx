@@ -9,7 +9,8 @@ import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup'; 
 import RestaurantEdit from './components/RestaurantForm/RestaurantEdit'; 
 import AddRestaurant from './components/RestaurantCard/AddRestaurant'; // Corrected path for AddRestaurant component
-import { CartProvider } from './CartContext';
+import { CartProvider } from './components/CartContext/CartContext'; // Correct path
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
