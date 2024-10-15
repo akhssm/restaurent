@@ -1,60 +1,75 @@
-// src/CartContext.js
+// src/components/Cart/CartContext.jsx
 import React, { createContext, useContext, useState } from 'react';
 
-// Create a Cart Context
+// Create the Cart Context
 const CartContext = createContext();
 
-// Custom hook to use the Cart Context
-export const useCart = () => {
-    return useContext(CartContext);
+export const CartProvider = ({ children }) => {
+  const [cartItems, setCartItems] = useState([]);
+
+  const addItemToCart = (item) => {
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((cartItem) => cartItem.id === item.id);
+      if (existingItem) {
+        return prevItems.map((cartItem) =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        );
+      } else {
+        return [...prevItems, { ...item, quantity: 1 }];
+      }
+    });
+  };
+
+  const removeItemFromCart = (item) => {
+    setCartItems((prevItems) => prevItems.filter((cartItem) => cartItem.id !== item.id));
+  };
+
+  const increaseQuantity = (item) => {
+    setCartItems((prevItems) =>
+      prevItems.map((cartItem) =>
+        cartItem.id === item.id
+          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          : cartItem
+      )
+    );
+  };
+
+  const decreaseQuantity = (item) => {
+    setCartItems((prevItems) =>
+      prevItems.map((cartItem) =>
+        cartItem.id === item.id && cartItem.quantity > 1
+          ? { ...cartItem, quantity: cartItem.quantity - 1 }
+          : cartItem
+      )
+    );
+  };
+
+  return (
+    <CartContext.Provider
+      value={{
+        cartItems,
+        addItemToCart,
+        removeItemFromCart,
+        increaseQuantity,
+        decreaseQuantity,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
 };
 
-// Cart Provider Component
-export const CartProvider = ({ children }) => {
-    const [cartItems, setCartItems] = useState([]); // State to hold cart items
+export const useCart = () => {
+  return useContext(CartContext);
+};
 
-    // Function to add an item to the cart
-    const addItemToCart = (item) => {
-        const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
-        if (existingItem) {
-            setCartItems(cartItems.map(cartItem =>
-                cartItem.id === item.id
-                    ? { ...cartItem, quantity: cartItem.quantity + 1 }
-                    : cartItem
-            ));
-        } else {
-            setCartItems([...cartItems, { ...item, quantity: 1 }]);
-        }
-    };
+// AddToCart component within the same file
+export const AddToCart = ({ item }) => {
+  const { addItemToCart } = useCart();
 
-    // Function to remove an item from the cart
-    const removeItemFromCart = (itemToRemove) => {
-        setCartItems(prevItems =>
-            prevItems.filter(item => item.id !== itemToRemove.id)
-        );
-    };
-
-    // Function to increase the quantity of an item
-    const increaseQuantity = (item) => {
-        setCartItems(cartItems.map(cartItem =>
-            cartItem.id === item.id
-                ? { ...cartItem, quantity: cartItem.quantity + 1 }
-                : cartItem
-        ));
-    };
-
-    // Function to decrease the quantity of an item
-    const decreaseQuantity = (item) => {
-        setCartItems(cartItems.map(cartItem =>
-            cartItem.id === item.id && cartItem.quantity > 1
-                ? { ...cartItem, quantity: cartItem.quantity - 1 }
-                : cartItem
-        ));
-    };
-
-    return (
-        <CartContext.Provider value={{ cartItems, addItemToCart, removeItemFromCart, increaseQuantity, decreaseQuantity }}>
-            {children}
-        </CartContext.Provider>
-    );
+  return (
+    <button onClick={() => addItemToCart(item)}>Add to Cart</button>
+  );
 };

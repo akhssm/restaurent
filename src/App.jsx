@@ -5,13 +5,13 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Cart from './components/Cart/Cart';
 import Menu from './components/Menu/Menu';
-import EditMenu from './components/Menu/EditMenu'; // Route for EditMenu
+import EditMenu from './components/Menu/EditMenu';
 import RestaurantList from './components/RestaurantCard/RestaurantList';
 import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
 import RestaurantEdit from './components/RestaurantForm/RestaurantEdit';
-import AddRestaurant from './components/RestaurantCard/AddRestaurant'; // Corrected path for AddRestaurant component
-import { CartProvider } from './components/CartContext/CartContext'; // Correct path
+import AddRestaurant from './components/RestaurantCard/AddRestaurant';
+import { CartProvider } from './components/CartContext/CartContext';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -56,6 +56,12 @@ function App() {
     );
   };
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserEmail(null);
+    localStorage.removeItem('userEmail');
+  };
+
   return (
     <CartProvider>
       <Router>
@@ -67,15 +73,16 @@ function App() {
           userEmail={userEmail}
           setUserEmail={setUserEmail}
           restaurants={restaurants}
-          onAddRestaurant={handleAddRestaurant} // Pass the add handler
-          onUpdateRestaurant={handleUpdateRestaurant} // Pass the update handler
+          onAddRestaurant={handleAddRestaurant} 
+          onUpdateRestaurant={handleUpdateRestaurant}
+          onLogout={handleLogout} // Pass logout handler
         />
       </Router>
     </CartProvider>
   );
 }
 
-const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, userEmail, setUserEmail, restaurants, onAddRestaurant, onUpdateRestaurant }) => {
+const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, userEmail, setUserEmail, restaurants, onAddRestaurant, onUpdateRestaurant, onLogout }) => {
   return (
     <div>
       <Routes>
@@ -87,7 +94,8 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
                 setSearchQuery={setSearchQuery} 
                 userEmail={userEmail} 
                 setIsLoggedIn={setIsLoggedIn} 
-                setUserEmail={setUserEmail}
+                setUserEmail={setUserEmail} 
+                onLogout={onLogout} // Pass logout function to Header
               />
               <RestaurantList 
                 searchQuery={searchQuery} 
@@ -104,7 +112,7 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
           path="/cart" 
           element={(
             <>
-              <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
+              <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} onLogout={onLogout} />
               <Cart />
             </>
           )} 
@@ -114,8 +122,8 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
           path="/menu/:id" 
           element={(
             <>
-              <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
-              <Menu /> {/* Ensure Menu component receives the correct restaurant data */}
+              <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} onLogout={onLogout} />
+              <Menu />
             </>
           )} 
         />
@@ -124,7 +132,7 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
           path="/edit-menu/:id/:itemId" 
           element={(
             <>
-              <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
+              <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} onLogout={onLogout} />
               <EditMenu restaurants={restaurants} onUpdateRestaurant={onUpdateRestaurant} />
             </>
           )} 
@@ -156,7 +164,7 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
           path="/add-restaurant" 
           element={(
             <>
-              <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
+              <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} onLogout={onLogout} />
               <AddRestaurant onAddRestaurant={onAddRestaurant} />
             </>
           )} 

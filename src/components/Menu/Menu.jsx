@@ -1,7 +1,8 @@
+// src/components/Menu/Menu.jsx
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useCart } from '../CartContext/CartContext'; // Importing the useCart hook
 import './Menu.css';
-import { useCart } from '../CartContext/CartContext'; // Adjust path as needed
 
 // Dummy data for restaurant menus
 export const dummyMenus = {
@@ -57,11 +58,25 @@ const restaurantNames = {
   6: 'Paradise',
 };
 
+// Component to add items to the cart
+const AddToCart = ({ item }) => {
+  const { addItemToCart } = useCart(); // Get the addItemToCart function from the context
+
+  const handleAddToCart = () => {
+    addItemToCart({ ...item, quantity: 1 }); // Add item to cart with initial quantity
+  };
+
+  return (
+    <button className="add-to-cart-button" onClick={handleAddToCart}>
+      Add to Cart
+    </button>
+  );
+};
+
 const Menu = () => {
   const { id } = useParams(); // Get restaurant ID from URL
   const menuItems = dummyMenus[id] || []; // Fetch menu based on restaurant ID
   const restaurantName = restaurantNames[id]; // Get restaurant name
-  const { addToCart } = useCart(); // Use cart context to add items to cart
 
   // State for search query
   const [searchQuery, setSearchQuery] = useState('');
@@ -81,7 +96,6 @@ const Menu = () => {
       {restaurantName ? (
         <>
           <h2>Menu for {restaurantName}</h2>
-          {/* Search input */}
           <input
             type="text"
             placeholder="Search for items..."
@@ -89,7 +103,6 @@ const Menu = () => {
             onChange={handleSearchChange}
           />
 
-          {/* Menu items */}
           <ul>
             {filteredItems.length > 0 ? (
               filteredItems.map((item) => (
@@ -98,12 +111,7 @@ const Menu = () => {
                     {item.name} - {item.quantity} - {item.price}
                   </div>
                   <div className="menu-buttons">
-                    <button
-                      className="add-to-cart-button"
-                      onClick={() => addToCart(item)}
-                    >
-                      Add to Cart
-                    </button>
+                    <AddToCart item={item} /> {/* Add the AddToCart button here */}
                     <Link to={`/edit-menu/${id}/${item.id}`}>
                       <button className="edit-button">Edit</button>
                     </Link>
