@@ -36,6 +36,14 @@
     margin: 5px 0;
 }
 
+/* Style for the button container to display buttons side by side */
+.button-container {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 10px; /* Space between buttons */
+}
+
+/* Button styles */
 button {
     background-color: #4CAF50; /* Green */
     color: white;

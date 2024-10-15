@@ -30,14 +30,16 @@ const RestaurantCard = ({ id, name, rating, description, image, showEditButton }
       <h3>{name}</h3>
       <p>{description}</p>
       <p>Rating: {rating}</p>
-      <Link to={`/menu/${id}`}>
-        <button>View Menu</button>
-      </Link>
-      {showEditButton && (
-        <Link to={`/edit/${id}`}>
-          <button>Edit</button>
+      <div className="button-container"> {/* Wrap buttons in a container */}
+        <Link to={`/menu/${id}`}>
+          <button>View Menu</button>
         </Link>
-      )}
+        {showEditButton && (
+          <Link to={`/edit/${id}`}>
+            <button>Edit</button>
+          </Link>
+        )}
+      </div>
     </div>
   );
 };
