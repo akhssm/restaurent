@@ -1,10 +1,11 @@
+// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Cart from './components/Cart/Cart';
 import Menu from './components/Menu/Menu';
-import EditMenu from './components/Menu/EditMenu'; // Route missing before
+import EditMenu from './components/Menu/EditMenu'; // Route for EditMenu
 import RestaurantList from './components/RestaurantCard/RestaurantList';
 import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
@@ -26,14 +27,16 @@ function App() {
     }
 
     // Fetch initial restaurant data
-    const fetchRestaurants = () => [
-      { id: 1, name: 'Almond House', rating: '4.5', description: 'Best Sweets' },
-      { id: 2, name: 'Bawarchi', rating: '4.2', description: 'Famous Biryani' },
-      { id: 3, name: 'Cream Stone', rating: '4.7', description: 'Ice Cream Heaven' },
-      { id: 4, name: 'Dominos Pizza', rating: '4.6', description: 'Work hard, Be nice, Eat pizza' },
-      { id: 5, name: 'Shah Ghouse', rating: '4.3', description: 'Hyderabadi Biryani' },
-      { id: 6, name: 'Paradise', rating: '4.3', description: 'World’s Favourite Biryani' }
-    ];
+    const fetchRestaurants = () => {
+      return [
+        { id: 1, name: 'Almond House', rating: '4.5', description: 'Best Sweets' },
+        { id: 2, name: 'Bawarchi', rating: '4.2', description: 'Famous Biryani' },
+        { id: 3, name: 'Cream Stone', rating: '4.7', description: 'Ice Cream Heaven' },
+        { id: 4, name: 'Dominos Pizza', rating: '4.6', description: 'Work hard, Be nice, Eat pizza' },
+        { id: 5, name: 'Shah Ghouse', rating: '4.3', description: 'Hyderabadi Biryani' },
+        { id: 6, name: 'Paradise', rating: '4.3', description: 'World’s Favourite Biryani' }
+      ];
+    };
 
     setRestaurants(fetchRestaurants());
   }, []);
@@ -112,17 +115,17 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
           element={(
             <>
               <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
-              <Menu restaurants={restaurants} /> {/* Pass restaurants prop */}
+              <Menu /> {/* Ensure Menu component receives the correct restaurant data */}
             </>
           )} 
         />
 
         <Route 
-          path="/edit-menu/:id/:itemId" // Added route for EditMenu
+          path="/edit-menu/:id/:itemId" 
           element={(
             <>
               <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
-              <EditMenu restaurants={restaurants} /> {/* Ensure restaurants prop is passed */}
+              <EditMenu restaurants={restaurants} onUpdateRestaurant={onUpdateRestaurant} />
             </>
           )} 
         />

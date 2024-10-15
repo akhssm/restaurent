@@ -1,4 +1,4 @@
-// Cart.jsx
+// src/components/Cart/Cart.jsx
 import React from 'react';
 import Menu from '../Menu/Menu'; // Correct path to Menu.jsx
 import './Cart.css';
