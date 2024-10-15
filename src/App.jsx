@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Header from './components/Header/Header';  
+import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Cart from './components/Cart/Cart';
-import Menu from './components/Menu/Menu'; 
-import RestaurantList from './components/RestaurantCard/RestaurantList'; 
-import Login from './components/Login/Login'; 
-import Signup from './components/Signup/Signup'; 
-import RestaurantEdit from './components/RestaurantForm/RestaurantEdit'; 
+import Menu from './components/Menu/Menu';
+import EditMenu from './components/Menu/EditMenu'; // Route missing before
+import RestaurantList from './components/RestaurantCard/RestaurantList';
+import Login from './components/Login/Login';
+import Signup from './components/Signup/Signup';
+import RestaurantEdit from './components/RestaurantForm/RestaurantEdit';
 import AddRestaurant from './components/RestaurantCard/AddRestaurant'; // Corrected path for AddRestaurant component
 import { CartProvider } from './components/CartContext/CartContext'; // Correct path
-
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -26,7 +26,7 @@ function App() {
     }
 
     // Fetch initial restaurant data
-    const initialRestaurants = [
+    const fetchRestaurants = () => [
       { id: 1, name: 'Almond House', rating: '4.5', description: 'Best Sweets' },
       { id: 2, name: 'Bawarchi', rating: '4.2', description: 'Famous Biryani' },
       { id: 3, name: 'Cream Stone', rating: '4.7', description: 'Ice Cream Heaven' },
@@ -34,7 +34,8 @@ function App() {
       { id: 5, name: 'Shah Ghouse', rating: '4.3', description: 'Hyderabadi Biryani' },
       { id: 6, name: 'Paradise', rating: '4.3', description: 'World’s Favourite Biryani' }
     ];
-    setRestaurants(initialRestaurants);
+
+    setRestaurants(fetchRestaurants());
   }, []);
 
   const handleAddRestaurant = (newRestaurant) => {
@@ -75,65 +76,92 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
   return (
     <div>
       <Routes>
-        <Route path="/" element={isLoggedIn ? (
-          <>
-            <Header 
-              setSearchQuery={setSearchQuery} 
-              userEmail={userEmail} 
-              setIsLoggedIn={setIsLoggedIn} 
-              setUserEmail={setUserEmail}
-            />
-            <RestaurantList 
-              searchQuery={searchQuery} 
-              restaurants={restaurants} 
-              onUpdateRestaurant={onUpdateRestaurant} 
-            />
-          </>
-        ) : (
-          <Navigate to="/login" />
-        )} />
+        <Route 
+          path="/" 
+          element={isLoggedIn ? (
+            <>
+              <Header 
+                setSearchQuery={setSearchQuery} 
+                userEmail={userEmail} 
+                setIsLoggedIn={setIsLoggedIn} 
+                setUserEmail={setUserEmail}
+              />
+              <RestaurantList 
+                searchQuery={searchQuery} 
+                restaurants={restaurants} 
+                onUpdateRestaurant={onUpdateRestaurant} 
+              />
+            </>
+          ) : (
+            <Navigate to="/login" />
+          )} 
+        />
 
-        <Route path="/cart" element={(
-          <>
-            <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
-            <Cart />
-          </>
-        )} />
+        <Route 
+          path="/cart" 
+          element={(
+            <>
+              <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
+              <Cart />
+            </>
+          )} 
+        />
 
-        <Route path="/menu/:id" element={(
-          <>
-            <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
-            <Menu />
-          </>
-        )} />
+        <Route 
+          path="/menu/:id" 
+          element={(
+            <>
+              <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
+              <Menu restaurants={restaurants} /> {/* Pass restaurants prop */}
+            </>
+          )} 
+        />
 
-        <Route path="/login" element={(
-          <>
-            <Header hideElements={true} />
-            <Login setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
-          </>
-        )} />
+        <Route 
+          path="/edit-menu/:id/:itemId" // Added route for EditMenu
+          element={(
+            <>
+              <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
+              <EditMenu restaurants={restaurants} /> {/* Ensure restaurants prop is passed */}
+            </>
+          )} 
+        />
+
+        <Route 
+          path="/login" 
+          element={(
+            <>
+              <Header hideElements={true} />
+              <Login setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
+            </>
+          )} 
+        />
 
         <Route path="/signup" element={<Signup />} />
 
-        <Route path="/edit/:id" element={(
-          <RestaurantEdit 
-            restaurants={restaurants} 
-            onUpdateRestaurant={onUpdateRestaurant} 
-          />
-        )} />
+        <Route 
+          path="/edit/:id" 
+          element={(
+            <RestaurantEdit 
+              restaurants={restaurants} 
+              onUpdateRestaurant={onUpdateRestaurant} 
+            />
+          )} 
+        />
 
-        <Route path="/add-restaurant" element={(
-          <>
-            <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
-            <AddRestaurant onAddRestaurant={onAddRestaurant} />
-          </>
-        )} />
-
+        <Route 
+          path="/add-restaurant" 
+          element={(
+            <>
+              <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
+              <AddRestaurant onAddRestaurant={onAddRestaurant} />
+            </>
+          )} 
+        />
       </Routes>
       <Footer />
     </div>
   );
-};
+}
 
 export default App;
