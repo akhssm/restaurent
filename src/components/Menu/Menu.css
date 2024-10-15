@@ -1,14 +1,3 @@
-/* Menu.css */
-
-.menu-container {
-    padding: 20px;
-    background-color: #f9f9f9; /* Light background for contrast */
-    border-radius: 8px;
-    max-width: 800px; /* Limit the width for better readability */
-    margin: 20px auto; /* Center the menu on the page */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-}
-
 .menu-item {
     background-color: white; /* White background for menu items */
     border: 1px solid #ddd; /* Light border for separation */
@@ -16,29 +5,41 @@
     padding: 15px; /* Spacing inside the item */
     margin: 10px 0; /* Space between menu items */
     display: flex; /* Flexbox for alignment */
-    justify-content: space-between; /* Space between name and button */
+    justify-content: space-between; /* Space between item info and buttons */
     align-items: center; /* Center align items */
 }
 
-.menu-item h3 {
-    margin: 0; /* Remove default margin */
-    color: #333; /* Dark text color */
+.item-info {
+    flex: 1; /* Item information takes up the space before buttons */
 }
 
-.menu-item p {
-    margin: 0; /* Remove default margin */
-    color: #555; /* Slightly lighter text for price */
+.menu-buttons {
+    display: flex;
+    justify-content: space-between; /* Ensure buttons are spaced */
+    gap: 10px; /* Add spacing between the buttons */
 }
 
-button {
-    background-color: #4CAF50; /* Green */
-    color: white;
+.menu-buttons button {
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-button:hover {
+.add-to-cart-button {
+    background-color: #4CAF50; /* Green color for Add to Cart */
+    color: white;
+}
+
+.edit-button {
+    background-color: #2196F3; /* Blue color for Edit */
+    color: white;
+}
+
+.add-to-cart-button:hover {
     background-color: #45a049; /* Darker green on hover */
+}
+
+.edit-button:hover {
+    background-color: #0b7dda; /* Darker blue on hover */
 }

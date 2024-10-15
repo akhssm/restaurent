@@ -91,12 +91,16 @@ const Menu = () => {
       <ul>
         {filteredItems.length > 0 ? (
           filteredItems.map((item) => (
-            <li key={item.id}>
-              {item.name} - {item.quantity} - {item.price}
-              <button onClick={() => addToCart(item)}>Add to Cart</button>
-              <Link to={`/edit-menu/${id}/${item.id}`}>
-                <button>Edit</button>
-              </Link>
+            <li key={item.id} className="menu-item">
+              <div className="item-info">
+                {item.name} - {item.quantity} - {item.price}
+              </div>
+              <div className="menu-buttons">
+                <button className="add-to-cart-button" onClick={() => addToCart(item)}>Add to Cart</button>
+                <Link to={`/edit-menu/${id}/${item.id}`}>
+                  <button className="edit-button">Edit</button>
+                </Link>
+              </div>
             </li>
           ))
         ) : (
