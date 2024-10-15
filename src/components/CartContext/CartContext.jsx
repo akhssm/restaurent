@@ -34,8 +34,26 @@ export const CartProvider = ({ children }) => {
         );
     };
 
+    // Function to increase the quantity of an item
+    const increaseQuantity = (item) => {
+        setCartItems(cartItems.map(cartItem =>
+            cartItem.id === item.id
+                ? { ...cartItem, quantity: cartItem.quantity + 1 }
+                : cartItem
+        ));
+    };
+
+    // Function to decrease the quantity of an item
+    const decreaseQuantity = (item) => {
+        setCartItems(cartItems.map(cartItem =>
+            cartItem.id === item.id && cartItem.quantity > 1
+                ? { ...cartItem, quantity: cartItem.quantity - 1 }
+                : cartItem
+        ));
+    };
+
     return (
-        <CartContext.Provider value={{ cartItems, addItemToCart, removeItemFromCart }}>
+        <CartContext.Provider value={{ cartItems, addItemToCart, removeItemFromCart, increaseQuantity, decreaseQuantity }}>
             {children}
         </CartContext.Provider>
     );

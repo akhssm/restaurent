@@ -58,55 +58,66 @@ const restaurantNames = {
 };
 
 const Menu = () => {
-  const { id } = useParams();
-  const menuItems = dummyMenus[id] || []; // Fetch menu based on the restaurant ID
-  const restaurantName = restaurantNames[id]; // Get restaurant name from mapping
-  const { addToCart } = useCart(); // Use the cart context
+  const { id } = useParams(); // Get restaurant ID from URL
+  const menuItems = dummyMenus[id] || []; // Fetch menu based on restaurant ID
+  const restaurantName = restaurantNames[id]; // Get restaurant name
+  const { addToCart } = useCart(); // Use cart context to add items to cart
 
-  // State for the search query
+  // State for search query
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Function to handle the search input change
+  // Handle search input change
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  // Filter menu items based on the search query
+  // Filter menu items based on search query
   const filteredItems = menuItems.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="menu-container">
-      <h2>Menu for {restaurantName}</h2>
+      {restaurantName ? (
+        <>
+          <h2>Menu for {restaurantName}</h2>
+          {/* Search input */}
+          <input
+            type="text"
+            placeholder="Search for items..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
 
-      {/* Search input field */}
-      <input
-        type="text"
-        placeholder="Search for items..."
-        value={searchQuery}
-        onChange={handleSearchChange}
-      />
-
-      <ul>
-        {filteredItems.length > 0 ? (
-          filteredItems.map((item) => (
-            <li key={item.id} className="menu-item">
-              <div className="item-info">
-                {item.name} - {item.quantity} - {item.price}
-              </div>
-              <div className="menu-buttons">
-                <button className="add-to-cart-button" onClick={() => addToCart(item)}>Add to Cart</button>
-                <Link to={`/edit-menu/${id}/${item.id}`}>
-                  <button className="edit-button">Edit</button>
-                </Link>
-              </div>
-            </li>
-          ))
-        ) : (
-          <li>No items found.</li>
-        )}
-      </ul>
+          {/* Menu items */}
+          <ul>
+            {filteredItems.length > 0 ? (
+              filteredItems.map((item) => (
+                <li key={item.id} className="menu-item">
+                  <div className="item-info">
+                    {item.name} - {item.quantity} - {item.price}
+                  </div>
+                  <div className="menu-buttons">
+                    <button
+                      className="add-to-cart-button"
+                      onClick={() => addToCart(item)}
+                    >
+                      Add to Cart
+                    </button>
+                    <Link to={`/edit-menu/${id}/${item.id}`}>
+                      <button className="edit-button">Edit</button>
+                    </Link>
+                  </div>
+                </li>
+              ))
+            ) : (
+              <li>No items found.</li>
+            )}
+          </ul>
+        </>
+      ) : (
+        <h2>Restaurant not found</h2>
+      )}
     </div>
   );
 };
