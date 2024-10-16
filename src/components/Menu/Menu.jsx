@@ -58,31 +58,19 @@ const restaurantNames = {
   6: 'Paradise',
 };
 
-// Component to add items to the cart
-const AddToCart = ({ item }) => {
-  const { addItemToCart } = useCart(); // Get the addItemToCart function from the context
-
-  const handleAddToCart = () => {
-    addItemToCart({ ...item, quantity: 1 }); // Add item to cart with initial quantity
-    alert(`${item.name} has been added to your cart!`); // Alert the user
-  };
-
-  return (
-    <button className="add-to-cart-button" onClick={handleAddToCart}>
-      Add to Cart
-    </button>
-  );
-};
-
 const Menu = () => {
   const { id } = useParams(); // Get restaurant ID from URL
   const menuItems = dummyMenus[id] || []; // Fetch menu based on restaurant ID
   const restaurantName = restaurantNames[id]; // Get restaurant name
 
+  const { addItemToCart, removeItemFromCart } = useCart(); // Get cart functions
   const navigate = useNavigate(); // For navigation
 
   // State for search query
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // State to keep track of item quantities
+  const [itemQuantities, setItemQuantities] = useState({});
 
   // Handle search input change
   const handleSearchChange = (event) => {
@@ -93,6 +81,27 @@ const Menu = () => {
   const filteredItems = menuItems.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Function to update quantity
+  const updateQuantity = (id, increment) => {
+    setItemQuantities((prevQuantities) => {
+      const currentQuantity = prevQuantities[id] || 0;
+      const newQuantity = currentQuantity + increment;
+
+      if (newQuantity < 0) return prevQuantities; // Prevent negative quantities
+
+      const updatedQuantities = { ...prevQuantities, [id]: newQuantity };
+
+      // Update the cart
+      if (newQuantity === 0) {
+        removeItemFromCart(id); // Remove from cart if quantity is 0
+      } else {
+        addItemToCart({ id, quantity: newQuantity }); // Update cart with new quantity
+      }
+
+      return updatedQuantities;
+    });
+  };
 
   // Navigate to Add Item page
   const handleAddNewItem = () => {
@@ -123,7 +132,9 @@ const Menu = () => {
                     {item.name} - {item.quantity} - {item.price}
                   </div>
                   <div className="menu-buttons">
-                    <AddToCart item={item} /> {/* Add the AddToCart button here */}
+                    <button className="quantity-button" onClick={() => updateQuantity(item.id, -1)}>-</button>
+                    <span>{itemQuantities[item.id] || 0}</span>
+                    <button className="quantity-button" onClick={() => updateQuantity(item.id, 1)}>+</button>
                     <Link to={`/edit-menu/${id}/${item.id}`}>
                       <button className="edit-button">Edit</button>
                     </Link>
