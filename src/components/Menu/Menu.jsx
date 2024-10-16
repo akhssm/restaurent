@@ -94,7 +94,7 @@ const Menu = () => {
 
       // Update the cart
       if (newQuantity === 0) {
-        removeItemFromCart(id); // Remove from cart if quantity is 0
+        removeItemFromCart({ id }); // Remove from cart if quantity is 0
       } else {
         addItemToCart({ id, quantity: newQuantity }); // Update cart with new quantity
       }
