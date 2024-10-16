@@ -1,13 +1,13 @@
+// src/components/Cart/Cart.jsx
 import React from 'react';
 import './Cart.css';
-import { useCart } from '../CartContext/CartContext'; // Importing the useCart hook
+import { useCart } from '../CartContext/CartContext';
 
 const Cart = () => {
-  const { cartItems, removeItemFromCart, increaseQuantity, decreaseQuantity } = useCart(); // Use the context
+  const { cartItems, removeItemFromCart, increaseQuantity, decreaseQuantity } = useCart();
 
-  // Calculate the total amount in the cart
   const totalAmount = cartItems.reduce((total, item) => {
-    return total + parseFloat(item.price.slice(1)) * item.quantity; // Correctly parsing the price
+    return total + parseFloat(item.price.slice(1)) * item.quantity;
   }, 0);
 
   return (

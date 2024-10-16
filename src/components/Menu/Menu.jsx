@@ -64,6 +64,7 @@ const AddToCart = ({ item }) => {
 
   const handleAddToCart = () => {
     addItemToCart({ ...item, quantity: 1 }); // Add item to cart with initial quantity
+    alert(`${item.name} has been added to your cart!`); // Alert the user
   };
 
   return (

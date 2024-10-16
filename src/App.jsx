@@ -18,6 +18,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [userEmail, setUserEmail] = useState(null);
   const [restaurants, setRestaurants] = useState([]);
+  const [cartItems, setCartItems] = useState([]); // New state for cart items
 
   useEffect(() => {
     const savedEmail = localStorage.getItem('userEmail');
@@ -62,8 +63,13 @@ function App() {
     localStorage.removeItem('userEmail');
   };
 
+  // Add item to cart
+  const handleAddToCart = (item) => {
+    setCartItems((prevCartItems) => [...prevCartItems, item]);
+  };
+
   return (
-    <CartProvider>
+    <CartProvider value={{ cartItems, handleAddToCart }}> {/* Provide cart items and handler to context */}
       <Router>
         <AppRoutes 
           isLoggedIn={isLoggedIn} 

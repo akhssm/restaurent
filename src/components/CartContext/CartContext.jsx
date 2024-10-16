@@ -64,12 +64,3 @@ export const CartProvider = ({ children }) => {
 export const useCart = () => {
   return useContext(CartContext);
 };
-
-// AddToCart component within the same file
-export const AddToCart = ({ item }) => {
-  const { addItemToCart } = useCart();
-
-  return (
-    <button onClick={() => addItemToCart(item)}>Add to Cart</button>
-  );
-};
