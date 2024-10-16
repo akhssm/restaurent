@@ -1,6 +1,6 @@
 // src/components/Menu/Menu.jsx
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../CartContext/CartContext'; // Importing the useCart hook
 import './Menu.css';
 
@@ -63,7 +63,6 @@ const AddToCart = ({ item }) => {
   const { addItemToCart } = useCart(); // Get the addItemToCart function from the context
 
   const handleAddToCart = () => {
-    console.log("Add to cart function triggered:", item);
     addItemToCart({ ...item, quantity: 1 }); // Add item to cart with initial quantity
     alert(`${item.name} has been added to your cart!`); // Alert the user
   };
@@ -80,40 +79,25 @@ const Menu = () => {
   const menuItems = dummyMenus[id] || []; // Fetch menu based on restaurant ID
   const restaurantName = restaurantNames[id]; // Get restaurant name
 
+  const navigate = useNavigate(); // For navigation
+
   // State for search query
   const [searchQuery, setSearchQuery] = useState('');
-  
-  // State for new item input
-  const [newItem, setNewItem] = useState({ name: '', quantity: '', price: '' });
 
   // Handle search input change
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  // Handle new item input changes
-  const handleNewItemChange = (event) => {
-    const { name, value } = event.target;
-    setNewItem((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Add new item to the menu
-  const handleAddNewItem = (event) => {
-    event.preventDefault();
-    if (newItem.name && newItem.quantity && newItem.price) {
-      const newId = menuItems.length + 1; // Simple way to generate new id
-      const newMenuItem = { id: newId, ...newItem };
-      dummyMenus[id] = [...menuItems, newMenuItem]; // Update dummyMenus with the new item
-      setNewItem({ name: '', quantity: '', price: '' }); // Reset input fields
-    } else {
-      alert("Please fill in all fields!"); // Alert user to fill all fields
-    }
-  };
-
   // Filter menu items based on search query
   const filteredItems = menuItems.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Navigate to Add Item page
+  const handleAddNewItem = () => {
+    navigate(`/add-item/${id}`);
+  };
 
   return (
     <div className="menu-container">
@@ -127,34 +111,9 @@ const Menu = () => {
             onChange={handleSearchChange}
           />
 
-          <h3>Add New Item</h3>
-          <form onSubmit={handleAddNewItem}>
-            <input
-              type="text"
-              name="name"
-              placeholder="Food Item Name"
-              value={newItem.name}
-              onChange={handleNewItemChange}
-              required
-            />
-            <input
-              type="text"
-              name="quantity"
-              placeholder="Quantity"
-              value={newItem.quantity}
-              onChange={handleNewItemChange}
-              required
-            />
-            <input
-              type="text"
-              name="price"
-              placeholder="Price"
-              value={newItem.price}
-              onChange={handleNewItemChange}
-              required
-            />
-            <button type="submit">Add Item</button>
-          </form>
+          <button onClick={handleAddNewItem} className="add-item-button">
+            Add New Item
+          </button>
 
           <ul>
             {filteredItems.length > 0 ? (

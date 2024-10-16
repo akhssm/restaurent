@@ -6,6 +6,7 @@ import Footer from './components/Footer/Footer';
 import Cart from './components/Cart/Cart';
 import Menu from './components/Menu/Menu';
 import EditMenu from './components/Menu/EditMenu';
+import AddItem from './components/Menu/AddItem';
 import RestaurantList from './components/RestaurantCard/RestaurantList';
 import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
@@ -18,7 +19,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [userEmail, setUserEmail] = useState(null);
   const [restaurants, setRestaurants] = useState([]);
-  const [cartItems, setCartItems] = useState([]); // New state for cart items
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     const savedEmail = localStorage.getItem('userEmail');
@@ -30,12 +31,12 @@ function App() {
     // Fetch initial restaurant data
     const fetchRestaurants = () => {
       return [
-        { id: 1, name: 'Almond House', rating: '4.5', description: 'Best Sweets' },
-        { id: 2, name: 'Bawarchi', rating: '4.2', description: 'Famous Biryani' },
-        { id: 3, name: 'Cream Stone', rating: '4.7', description: 'Ice Cream Heaven' },
-        { id: 4, name: 'Dominos Pizza', rating: '4.6', description: 'Work hard, Be nice, Eat pizza' },
-        { id: 5, name: 'Shah Ghouse', rating: '4.3', description: 'Hyderabadi Biryani' },
-        { id: 6, name: 'Paradise', rating: '4.3', description: 'World’s Favourite Biryani' }
+        { id: 1, name: 'Almond House', rating: '4.5', description: 'Best Sweets', menuItems: [] },
+        { id: 2, name: 'Bawarchi', rating: '4.2', description: 'Famous Biryani', menuItems: [] },
+        { id: 3, name: 'Cream Stone', rating: '4.7', description: 'Ice Cream Heaven', menuItems: [] },
+        { id: 4, name: 'Dominos Pizza', rating: '4.6', description: 'Work hard, Be nice, Eat pizza', menuItems: [] },
+        { id: 5, name: 'Shah Ghouse', rating: '4.3', description: 'Hyderabadi Biryani', menuItems: [] },
+        { id: 6, name: 'Paradise', rating: '4.3', description: 'World’s Favourite Biryani', menuItems: [] }
       ];
     };
 
@@ -45,7 +46,7 @@ function App() {
   const handleAddRestaurant = (newRestaurant) => {
     setRestaurants((prevRestaurants) => [
       ...prevRestaurants,
-      { ...newRestaurant, id: prevRestaurants.length + 1 }
+      { ...newRestaurant, id: prevRestaurants.length + 1, menuItems: [] }
     ]);
   };
 
@@ -63,13 +64,23 @@ function App() {
     localStorage.removeItem('userEmail');
   };
 
-  // Add item to cart
   const handleAddToCart = (item) => {
     setCartItems((prevCartItems) => [...prevCartItems, item]);
   };
 
+  // Add item to a restaurant's menu
+  const handleAddMenuItem = (restaurantId, newItem) => {
+    setRestaurants((prevRestaurants) => 
+      prevRestaurants.map(restaurant =>
+        restaurant.id === restaurantId 
+          ? { ...restaurant, menuItems: [...restaurant.menuItems, newItem] }
+          : restaurant
+      )
+    );
+  };
+
   return (
-    <CartProvider value={{ cartItems, handleAddToCart }}> {/* Provide cart items and handler to context */}
+    <CartProvider value={{ cartItems, handleAddToCart }}>
       <Router>
         <AppRoutes 
           isLoggedIn={isLoggedIn} 
@@ -81,14 +92,15 @@ function App() {
           restaurants={restaurants}
           onAddRestaurant={handleAddRestaurant} 
           onUpdateRestaurant={handleUpdateRestaurant}
-          onLogout={handleLogout} // Pass logout handler
+          onAddMenuItem={handleAddMenuItem} // Pass menu item handler
+          onLogout={handleLogout} 
         />
       </Router>
     </CartProvider>
   );
 }
 
-const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, userEmail, setUserEmail, restaurants, onAddRestaurant, onUpdateRestaurant, onLogout }) => {
+const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, userEmail, setUserEmail, restaurants, onAddRestaurant, onUpdateRestaurant, onAddMenuItem, onLogout }) => {
   return (
     <div>
       <Routes>
@@ -101,7 +113,7 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
                 userEmail={userEmail} 
                 setIsLoggedIn={setIsLoggedIn} 
                 setUserEmail={setUserEmail} 
-                onLogout={onLogout} // Pass logout function to Header
+                onLogout={onLogout} 
               />
               <RestaurantList 
                 searchQuery={searchQuery} 
@@ -129,7 +141,7 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
           element={(
             <>
               <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} onLogout={onLogout} />
-              <Menu />
+              <Menu restaurants={restaurants} />
             </>
           )} 
         />
@@ -140,6 +152,16 @@ const AppRoutes = ({ isLoggedIn, searchQuery, setSearchQuery, setIsLoggedIn, use
             <>
               <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} onLogout={onLogout} />
               <EditMenu restaurants={restaurants} onUpdateRestaurant={onUpdateRestaurant} />
+            </>
+          )} 
+        />
+
+        <Route 
+          path="/add-item/:id" // Route for adding a new menu item
+          element={(
+            <>
+              <Header userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} onLogout={onLogout} />
+              <AddItem onAddMenuItem={onAddMenuItem} restaurants={restaurants} />
             </>
           )} 
         />
