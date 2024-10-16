@@ -1,10 +1,15 @@
-// src/components/Cart/Cart.jsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Cart.css';
 import { useCart } from '../CartContext/CartContext';
 
 const Cart = () => {
   const { cartItems, removeItemFromCart, increaseQuantity, decreaseQuantity } = useCart();
+
+  // Use useEffect to re-render the Cart component when cartItems changes
+  useEffect(() => {
+    // You can add any other side effects or logic here
+    console.log('Cart items updated:', cartItems);
+  }, [cartItems]);
 
   const totalAmount = cartItems.reduce((total, item) => {
     return total + parseFloat(item.price.slice(1)) * item.quantity;

@@ -33,7 +33,7 @@ function Header({ setSearchQuery, userEmail, setIsLoggedIn, setUserEmail, hideEl
   return (
     <header>
       <div className="restaurant-name">
-        <h1>Dummy Restaurant Name</h1>
+        <h1>Food Delivery App</h1>
       </div>
 
       {/* Conditionally render search bar and navigation based on hideElements prop */}
